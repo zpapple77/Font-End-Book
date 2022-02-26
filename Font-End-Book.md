@@ -152,6 +152,16 @@ JS主线程，就像是一个while循环，会一直执行下去。在这期间�
 
 ### 13.1浏览器渲染原理
 
+### 13.2重绘和回流
+
+### 13.3如何减少回流？
+
+1. 尽量少用style，使用class
+2. 对于会影响到其他盒子的元素，需要修改带下，可以使用定位
+3. 使用代码片段 document.createFragment()
+4. display:none  display:block
+5. 尽量不要使用 scrollTop scrollLeft offsetWidth offsetHeight强制浏览器回流
+
 ## 1x.其他
 
 ### 1.前端异常监控
