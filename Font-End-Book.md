@@ -1,6 +1,6 @@
 ## 1.JavaScript/ES6
 
-### 事件委托
+### 1.1事件委托
 
 弄明白事件委托必须理解事件事件出发的流程
 
@@ -22,7 +22,7 @@
 为什么要用事件委托？如果一个ul中包裹了100哥li，每个li有相同的click点击事件，我们一定会想用for循环然后给他们添加事件，在js中添加到页面上的事件处理熟练直接关系到页面的整体运行性能，因为需要不断地与dom节点进行交互，访问dom的次数越多，引起浏览器重绘与重排的次数也就越多，会延长整个页面的交互就绪时间（这也就是为什么性能优化的主要思想之一就是减少dom操作），每一个函数都是一个对象，是对象就会占用内存，对象越多内存的占用率就越大，性能自然就差了。
 时间委托的原理就是利用时间冒泡的原理来实现的，有这样一个机制，如果我们给外层的ul加上点击事件，那么里面的li被点击的时候，就会冒泡到外层的ul上，然后外层的ul上的时间被触发，这就是事件委托，委托他们的父级代为执行事件
 
-### 事件循环
+### 1.2事件循环
 
 一个浏览器通常有以下几个常驻的线程：
 
@@ -57,13 +57,13 @@ JS主线程，就像是一个while循环，会一直执行下去。在这期间�
 
 任务队列又分微任务队列和宏任务队列
 
-#### 微任务
+#### 1.2.1微任务
 
 - Promise
 - MutationObserver（Mutation Observer API 用来监视 DOM 变动）
 - Object.observe()（已废弃）
 
-#### 宏任务
+#### 1.2.2宏任务
 
 - setTimeout
 - setInterval
@@ -115,11 +115,11 @@ JS主线程，就像是一个while循环，会一直执行下去。在这期间�
    9. 再执行宏任务，输出4
 
 
-### preventDefault
+### 1.3 preventDefault
 
 preventDefault方法的起什么作用呢？我们知道比如<a href="http://www.baidu.com">百度< /a> 起的作用就是点击百度链接到http://www.baidu.com,这是属于<a>标签的默认行为，而preventDefault方法就是可以阻止它的默认行为的发生而发生其他的事情。
 
-### stopPropagation&cancelBubble
+### 1.4stopPropagation&cancelBubble
 
 阻止捕获和冒泡阶段中当前事件的进一步传播。
 
@@ -133,11 +133,243 @@ preventDefault方法的起什么作用呢？我们知道比如<a href="http://ww
 
 相反cancelBubble不符合W3C标准，而且只支持IE浏览器。所以很多时候，我们都要结合起来用。不过，cancelBubble在新版本chrome,opera浏览器中已经支持。
 
-![img](https://images2015.cnblogs.com/blog/1044137/201703/1044137-20170313233854776-1870096155.png)
+![img](https://gitee.com/cod3kin9/image-host/raw/master/image/20220306190046.png)
 
 **即该方法不仅仅可以阻止冒泡，还可以阻止捕获和处于目标阶段。**
 
+### 1.5自定义事件
+
+```js
+const div = document.createElement('div') // 不创建元素，直接用 window 对象也可以
+const event = new Event('build')
+
+div.addEventListener('build', function(e) {
+    console.log(111)
+})
+
+div.dispatchEvent(event)//触发事件
+```
+
+### 1.6target和currentTarget区别
+
+- event.target
+  返回触发事件的元素
+- event.currentTarget
+  返回绑定事件的元素
+
+### 1.7prototype和__ proto__的关系是什么
+
+**先说结论：**
+
+1. `prototype` 用于访问函数的原型对象。
+
+2. `__proto__` 用于访问对象实例的原型对象（或者使用 `Object.getPrototypeOf()`）。
+
+   ```js
+   function Test() {}
+   const test = new Test()
+   test.__proto__ == Test.prototype // true
+   ```
+
+   函数拥有 `prototype` 属性，对象实例拥有 `__proto__` 属性，它们都是用来访问原型对象的。
+
+   函数有点特别，它不仅是个函数，还是个对象。所以它也有 `__proto__` 属性。
+
+### 1.8继承
+
+ES5中的继承，看图：
+
+![img](https://images2015.cnblogs.com/blog/339959/201606/339959-20160621160510881-1716509128.png)
+
+```js
+case 1
+function Super() {}
+function Sub() {}
+Sub.prototype = new Super();
+Sub.prototype.constructor = Sub;
+
+var sub = new Sub();
+
+Sub.prototype.constructor === Sub; // ② true
+sub.constructor === Sub; // ④ true
+sub.__proto__ === Sub.prototype; // ⑤ true
+Sub.prototype.__proto__ == Super.prototype; // ⑦ true
+
+case 2
+function SuperType(name) {
+    this.name = name
+}
+
+SuperType.prototype.sayName = function() {
+    console.log(this.name)
+}
+
+function SubType(name, age) {
+    SuperType.call(this, name)
+    this.age = age
+}
+
+function extendPrototype(Sub, Super) {
+    Sub.prototype = Object.create(Super.prototype)
+    Sub.prototype.constructor = Sub
+}
+
+extendPrototype(SubType, SuperType)
+
+SubType.prototype.sayAge = function() {
+    console.log(this.age)
+}
+
+const sub = new SubType('tom', 18)
+sub.sayAge() // 18
+sub.sayName() // tom
+
+```
+
+ES6中的继承，看图：
+
+![img](https://images2015.cnblogs.com/blog/339959/201606/339959-20160621160651772-1577921554.png)
+
+```js
+
+class Sub extends Super {}
+
+var sub = new Sub();
+
+Sub.prototype.constructor === Sub; // ② true
+sub.constructor === Sub; // ④ true
+sub.__proto__ === Sub.prototype; // ⑤ true
+Sub.__proto__ === Super; // ⑥ true
+Sub.prototype.__proto__ === Super.prototype; // ⑦ true
+
+
+
+class SuperType {
+    constructor(name) {
+	this.name = name
+    }
+
+    sayName() {
+	console.log(this.name)
+    }
+}
+
+class SubType extends SuperType {
+    constructor(name, age) {
+	super(name)
+	this.age = age
+    }
+
+    sayAge(age) {
+	console.log(this.age)
+    }
+}
+
+const sub = new SubType('tom', 18)
+sub.sayAge() // 18
+sub.sayName() // tom
+```
+
+### 1.9闭包
+
+闭包是指有权访问另一个函数作用域中的变量的函数
+
+```js
+function sayHi(name) {
+    return () => {
+       console.log(`Hi! ${name}`)
+    }
+}
+const test = sayHi('xiaoming')
+test() // Hi! xiaoming
+```
+
+虽然sayHi函数已经执行完毕，但是其活动对象也不会被销毁，因为test函数仍然引用着sayHi函数中的变量name，这就是闭包。
+
+但也因为闭包引用着另一个函数的变量，导致另一个函数即使不使用了也无法销毁，所以闭包使用过多，会占用较多的内存，这也是一个副作用。
+
+#### 利用闭包实现私有属性
+
+```js
+const test = (function () {
+    let value = 0
+    return {
+        getVal() { return value },
+        setVal(val) { value = val }
+    } 
+})()
+```
+
+上面的代码，就实现了一个私有属性 `value`，它只能用过 `getVal()` 来获取值，通过 `setVal(val)` 来设置值。
+
+### 1.10内存回收
+
+有两种内存回收算法。第一种是引用计数垃圾收集，第二种是标记-清除算法（从2012年起，所有现代浏览器都使用了标记-清除垃圾回收算法）。
+
+#### 引用计数垃圾收集
+
+如果一个对象没有被其他对象引用，那它将被垃圾回收机制回收。
+
+```js
+let o = { a: 1 }
+```
+
+一个对象被创建，并被 o 引用。
+
+```js
+o = null
+```
+
+刚才被 o 引用的对象现在是零引用，将会被回收。
+
+循环引用
+
+引用计数垃圾收集有一个缺点，就是循环引用会造成对象无法被回收。
+
+```js
+function f(){
+  var o = {};
+  var o2 = {};
+  o.a = o2; // o 引用 o2
+  o2.a = o; // o2 引用 o
+
+  return "azerty";
+}
+
+f();
+```
+
+在 f() 执行后，函数的局部变量已经没用了，一般来说，这些局部变量都会被回收。但上述例子中，o 和 o2 形成了循环引用，导致无法被回收。
+
+#### 标记-清除算法
+
+这个算法假定设置一个叫做根（root）的对象（在Javascript里，根是全局对象）。垃圾回收器将定期从根开始，找所有从根开始引用的对象，然后找这些对象引用的对象……从根开始，垃圾回收器将找到所有可以获得的对象和收集所有不能获得的对象。
+
+对于刚才的例子来说，在 f() 执行后，由于 o 和 o2 从全局对象出发无法获取到，所以它们将会被回收。
+
+#### 高效使用内存
+
+在 JS 中能形成作用域的有函数、全局作用域、with，在 es6 还有块作用域。局部变量随着函数作用域销毁而被释放，全局作用域需要进程退出才能释放或者使用 delete 和赋空值 `null` `undefined`。
+
+在 V8 中用 delete 删除对象可能会干扰 V8 的优化，所以最好通过赋值方式解除引用。
+
 ## 2.CSS/less/scss
+
+### 2.1文本溢出省略号
+
+```css
+单行
+/*强制一行内显示文本*/
+white-space:nowrap;(默认是normal自动换行)
+/*超出部分折叠*/
+overflow：hidden
+/*文字用省略号代替超出的部分*/
+text-overflow：ellipsis
+多行
+/**/
+```
+
+
 
 ## 3.HTML
 
@@ -165,6 +397,10 @@ preventDefault方法的起什么作用呢？我们知道比如<a href="http://ww
 
 ### 跨域请求
 
+### http
+
+### websocket
+
 
 
 ### htps如何保证数据安全
@@ -182,6 +418,84 @@ preventDefault方法的起什么作用呢？我们知道比如<a href="http://ww
 3. 使用代码片段 document.createFragment()
 4. display:none  display:block
 5. 尽量不要使用 scrollTop scrollLeft offsetWidth offsetHeight强制浏览器回流
+
+### 13.4在浏览器输入URL回车之后发生了什么？
+
+大致流程：1.输入地址→2.DNS解析→3.tcp连接→4.发送http请求→5.返回http响应→6.渲染页面尤→7.断开连接
+
+**一、输入地址：**
+
+当我们在浏览器输入地址的时候，浏览器已经在只能匹配到可能得到的url了，他会从历史记录，书签等地方，找到已经输入的字符串可能对应的 url，然后给出智能提示，让你可以补全url地址。
+
+**二、DNS解析：**
+
+DNS解析的过程就是寻找哪台机器上有你需要资源的过程。当你在浏览器中输入一个地址时，例如http://www.baidu.com，其实不是百度网站真正意义上的地址。互联网上每一台计算机的唯一标识是它的IP地址，但是IP地址并不方便记忆。用户更喜欢用方便记忆的网址去寻找互联网上的其它计算机，也就是上面提到的百度的网址。所以互联网设计者需要在用户的方便性与可用性方面做一个权衡，这个权衡就是一个网址到IP地址的转换，这个过程就是DNS解析。
+
+解析过程：
+
+1. 查找浏览器缓存：因为浏览器一般会缓存DNS记录一段时间，不同浏览器的时间可能不一样，一般2-30分钟不等，浏览器去查找这些缓存，如果有缓存，直接返回IP，否则下一步。
+2. 查找系统缓存：浏览器缓存中找不到IP之后，浏览器会查看本地硬盘的 hosts 文件，看看其中有没有和这个域名对应的规则，如果有的话就直接使用 hosts 文件里面的 ip 地址。
+3. 如果在本地的 hosts 文件没有能够找到对应的 ip 地址，浏览器会发出一个 DNS请求到本地DNS服务器 。
+4. 查询你输入的网址的DNS请求到达本地DNS服务器之后，本地DNS服务器会首先查询它的缓存记录，如果缓存中有此条记录，就可以直接返回结果，此过程是递归的方式进行查询。如果没有，本地DNS服务器还要向DNS根服务器进行查询。
+5. 根DNS服务器没有记录具体的域名和IP地址的对应关系，而是告诉本地DNS服务器，你可以到域服务器上去继续查询，并给出域服务器的地址。这种过程是迭代的过程。
+6. 本地DNS服务器继续向域服务器发出请求，在这个例子中，请求的对象是.com域服务器。.com域服务器收到请求之后，也不会直接返回域名和IP地址的对应关系，而是告诉本地DNS服务器，你的域名的解析服务器的地址。
+7. 最后，本地DNS服务器向域名的解析服务器发出请求，这时就能收到一个域名和IP地址对应关系，本地DNS服务器不仅要把IP地址返回给用户电脑，还要把这个对应关系保存在缓存中，以备下次别的用户查询时，可以直接返回结果，加快网络访问。
+
+DNS查询的两种方式：
+
+1、递归解析：
+
+当局部DNS服务器自己不能回答客户机的DNS查询时，它就需要向其他DNS服务器进行查询。此时有两种方式，如图所示的是递归方式。局部DNS服务器自己负责向其他DNS服务器进行查询，一般是先向该域名的根域服务器查询，再由根域名服务器一级级向下查询。最后得到的查询结果返回给局部DNS服务器，再由局部DNS服务器返回给客户端。
+
+![img](https://pic2.zhimg.com/80/v2-ea4f5f5cf28a9a6e166c4fc11b37ad21_1440w.jpg)
+
+2、迭代解析：
+
+当局部DNS服务器自己不能回答客户机的DNS查询时，也可以通过迭代查询的方式进行解析，如图所示。局部DNS服务器不是自己向其他DNS服务器进行查询，而是把能解析该域名的其他DNS服务器的IP地址返回给客户端DNS程序，客户端DNS程序再继续向这些DNS服务器进行查询，直到得到查询结果为止。也就是说，迭代解析只是帮你找到相关的服务器而已，而不会帮你去查。![img](https://pic2.zhimg.com/80/v2-4e0687456ae11fc76b0a77fc7e55eb21_1440w.jpg)
+
+**三、TCP连接：**
+
+主机浏览器通过DNS解析得到了目标服务器的IP地址后，与服务器建立TCP连接。
+
+TCP三次握手：
+
+第一次握手：客户端将标志位SYN置为1,随机产生一个值为seq=J（J的取值范围为=1234567）的数据包到服务器，客户端进入SYN_SENT状态，等待服务端确认；
+
+第二次握手：服务端收到数据包后由标志位SYN=1知道客户端请求建立连接，服务端将标志位SYN和ACK都置为1，ack=J+1，随机产生一个值seq=K，并将该数据包发送给客户端以确认连接请求，服务端进入SYN_RCVD状态。
+
+第三次握手：客户端收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack=K+1，并将该数据包发送给服务端，服务端检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，完成三次握手，随后客户端A与服务端B之间可以开始传输数据了。
+
+为什么需要三次握手：
+
+三次握手的目的是“为了防止已失效的连接请求报文段突然又传送到了服务端，因而产生错误。
+
+**四、发送http请求：**
+
+建立了TCP连接之后，发起一个http请求。一个典型的 http request header 一般需要包括请求的方法，例如 GET 或者 POST 等，不常用的还有 PUT 和 DELETE 、HEAD、OPTION以及 TRACE 方法。
+
+**五、返回http响应：**
+
+服务器接受并处理完请求，返回 HTTP 响应，一个响应报文格式基本等同于请求报文，由响应行、响应头、空行、实体组成。
+
+**六、浏览器解析渲染页面：**
+
+浏览器是一个边解析边渲染的过程。首先浏览器解析HTML文件构建DOM树，然后解析CSS文件构建渲染树，等到渲染树构建完成后，浏览器开始布局渲染树并将其绘制到屏幕上。这个过程比较复杂，涉及到两个概念: reflow(回流)和repain(重绘)。DOM节点中的各个元素都是以盒模型的形式存在，这些都需要浏览器去计算其位置和大小等，这个过程称为relow;当盒模型的位置,大小以及其他属性，如颜色,字体,等确定下来之后，浏览器便开始绘制内容，这个过程称为repain。页面在首次加载时必然会经历reflow和repain。reflow和repain过程是非常消耗性能的，尤其是在移动设备上，它会破坏用户体验，有时会造成页面卡顿。所以我们应该尽可能少的减少reflow和repain。
+
+浏览器两种渲染方式：
+
+webkit的主要流程：![img](https://pic2.zhimg.com/80/v2-ad2b8a9617646bb212b70c556cdb5759_1440w.jpg)
+
+**七、断开连接：**
+
+TCP四次挥手：
+
+第一次挥手：Client发送一个FIN，用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态。
+
+第二次挥手：Server收到FIN后，发送一个ACK给Client，确认序号为收到序号+1（与SYN相同，一个FIN占用一个序号），Server进入CLOSE_WAIT状态。
+
+第三次挥手：Server发送一个FIN，用来关闭Server到Client的数据传送，Server进入LAST_ACK状态。
+
+第四次挥手：Client收到FIN后，Client进入TIME_WAIT状态，接着发送一个ACK给Server，确认序号为收到序号+1，Server进入CLOSED状态，完成四次挥手。
 
 ## 1x.其他
 
