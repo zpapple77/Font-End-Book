@@ -353,6 +353,52 @@ f();
 
 在 V8 中用 delete 删除对象可能会干扰 V8 的优化，所以最好通过赋值方式解除引用。
 
+### 数组遍历有哪些方式？
+
+#### for
+
+#### forEach()函数
+
+#### map（）
+
+#### some( )函数与every( )函数
+
+`some( )`函数与`every( )`函数的相似之处都是在对数组进行遍历的过程中，判断数组中是否有满足条件的元素，如果有满足条件的就返回`true`,否则返回`false`.
+
+`some()`与`every()`的区别在于:`some( )`函数只要数组中某个元素满足条件就返回`true`,不会在对后面的元素进行判断。而`every( )`函数是数组中每个元素都要满足条件时才会返回`true`.
+
+#### find( )函数
+
+`find( )` 函数用于数组的遍历，当找到第一个满足条件的元素值时，则直接返回该元素值，如果都找不到满足条件的，则返回`undefined`.`find( )`方法的参数与`forEach`是一样的。
+
+### 函数定义有哪几种实现方式
+
+第一类是函数声明。
+
+```js
+function sum(num1, num2){
+     return num1 + num2
+}
+```
+
+
+
+第二类是函数表达式
+
+```js
+var sum =  function (num1,num2){    return num1 + num2}
+```
+
+
+
+第三类是通过`Function`构造函数来完成函数的定义。
+
+```js
+var sum = new Function('num1','num2', 'return a+b ')
+```
+
+
+
 ## 2.CSS/less/scss
 
 ### 2.1文本溢出省略号
@@ -386,6 +432,14 @@ text-overflow：ellipsis
 ## 9.TypeScript
 
 ## 10.React/React-Router/Redux
+
+### 10.1redux-thunk原理
+
+![img](https://img2018.cnblogs.com/blog/331769/201903/331769-20190320064356094-1041948774.png)
+
+view在redux中会派发一个action，action通过store的dispatch方法派发给store,store接收到action，连同之前到state，一起传给reducer，reducer返回一个新到数据给store,store去改变自己到state。这是redux的一个标准流程，那么我们说redux的中间件指的是谁和谁的之间，大家一定要记住，**redux的中间件指的是action和store之间。之前我们说action只能是一个对象，所以action是一个对象直接派发给了store。**但是现在，当我们使用了redux-thunk之后，action可以是函数了。
+
+
 
 ## 11.安全
 
