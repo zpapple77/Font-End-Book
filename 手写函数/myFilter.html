@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //filter
+      Array.prototype.myFilter = function (fn) {
+        var newArray = []
+        for (var i = 0; i < this.length; i++) {
+          var f = fn(this[i])
+          if (f) {
+            newArray.push(this[i])
+          }
+        }
+        return newArray
+      }
+      var array = [63, 75, 56, 89, 53]
+      var arr = array.myFilter(function (item) {
+        return item > 70
+      })
+      console.log(arr) //[75, 89]
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function fn(arr) {
+        var result = {}
+        var maxNum = 0
+        var maxElement = null
+        for (var i = 0; i < arr.length; i++) {
+          var val = arr[i]
+          result[val] === undefined ? (result[val] = 1) : result[val]++
+          if (result[val] > maxNum) {
+            maxNum = result[val]
+            maxElement = val
+          }
+        }
+        return '出现最多的是' + maxElement + ',一共出现了' + maxNum + '次'
+      }
+      var array = [1, 2, 3, 3, 3, 6, 6, 6, 6, 6, 7, 8, 9]
+      console.log(fn(array)) //出现最多的是6,一共出现了5次
+    </script>
+  </body>
+</html>

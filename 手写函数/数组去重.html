@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var arr = [1, 2, 3, 4, 5, 5, 6, 7, 7]
+      //使用数组去重
+      function fn1(array) {
+        var newArray = []
+        for (let i = 0; i < array.length; i++) {
+          if (newArray.indexOf(array[i]) === -1) {
+            newArray.push(array[i])
+          }
+        }
+        return newArray
+      }
+      console.log(fn1(arr)) //[1, 2, 3, 4, 5, 6, 7]
+
+      //使用键值对去重
+      function fn2(array) {
+        let obj = {},
+          result = [],
+          val
+        for (let i = 0; i < array.length; i++) {
+          val = array[i]
+          if (!obj[val]) {
+            obj[val] = true
+            result.push(val)
+          }
+        }
+        return result
+      }
+      var arr2 = [1, 2, 3, 4, 5, 5, 6, '6']
+      console.log(fn2(arr2)) //[1, 2, 3, 4, 5, 6]
+
+      //使用键值对去重改进
+      function fn3(array) {
+        var obj = {},
+          result = [],
+          val,
+          type
+        for (var i = 0; i < array.length; i++) {
+          val = array[i]
+          type = typeof val
+          if (!obj[val]) {
+            //判断元素存在不存在，如果不存在
+            obj[val] = [type] //把类型作为key的value
+            result.push(val)
+          } else if (obj[val].indexOf(type) < 0) {
+            //如果元素存在，obj[val]寸的是数组，数组中是对应的类型
+            //看看有没有type这个类型，小于0说明没有用这个类型，新类型同样要push
+            obj[val].push(type)
+            result.push(val)
+          }
+        }
+        return result
+      }
+      var arr = [1, 2, 3, 4, 5, 5, 6, '6']
+      console.log(fn3(arr))
+
+      //利用set去重
+      function fn4(arr) {
+        return Array.from(new Set(arr))
+      }
+      var arr = [1, 2, 3, 4, 5, 5, 6, '6']
+      console.log(fn4(arr))
+    </script>
+  </body>
+</html>

@@ -415,7 +415,61 @@ text-overflow：ellipsis
 /**/
 ```
 
+2.2清除浮动有哪些种方式
 
+为什么需要清除浮动？
+
+1. 父级没高度。
+2. 子盒子浮动了。
+3. 影响下面布局了，我们就应该清除浮动了
+
+![image-20220310154912239](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220310154912239.png)
+
+1.额外标签法 
+
+```css
+<div style="clear:both"></div>
+```
+
+
+
+2、父级添加 overflow 属性 
+
+```css
+overflow:hidden | auto | scroll
+```
+
+
+
+3、父级添加after伪元素
+
+```css
+.clearfix:after {  
+   content: ""; 
+   display: block; 
+   height: 0; 
+   clear: both; 
+   visibility: hidden;  
+ } 
+ .clearfix {  /* IE6、7 专有 */ 
+   *zoom: 1;
+ }   
+```
+
+4.父级添加双伪元素
+
+```css
+ .clearfix:before,.clearfix:after {
+   content:"";
+   display:table; 
+ }
+ .clearfix:after {
+   clear:both;
+ }
+ .clearfix {
+    *zoom:1;
+ }   
+```
 
 ## 3.HTML
 
