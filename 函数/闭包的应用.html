@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+     
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,25 +9,34 @@
   </head>
   <body>
     <script>
-      var stack = (function () {
-        var arr = []
-        return {
-          push: function (value) {
-            arr.push(value)
-          },
-          pop: function () {
-            return arr.pop()
-          },
-          size: function () {
-            return arr.length
-          },
-        }
-      })()
-      stack.push('abc')
-      stack.push('def')
-      console.log(stack.size()) // 2
-      console.log(stack.pop()) // def
-      console.log(stack.size()) // 1
+      // var stack = (function () {
+      //   var arr = []
+      //   return {
+      //     push: function (value) {
+      //       arr.push(value)
+      //     },
+      //     pop: function () {
+      //       return arr.pop()
+      //     },
+      //     size: function () {
+      //       return arr.length
+      //     },
+      //   }
+      // })()
+      // stack.push('abc')
+      // stack.push('def')
+      // console.log(stack.size()) // 2
+      // console.log(stack.pop()) // def
+      // console.log(stack.size()) // 1
+
+      var arr = ['a', 'b', 'c']
+      for (var i = 0; i < arr.length; i++) {
+        ;(function (index) {
+          setTimeout(function () {
+            console.log(arr[index])
+          }, 1000)
+        })(i)
+      }
     </script>
   </body>
 </html>
