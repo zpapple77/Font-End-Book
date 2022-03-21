@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //1. 工厂模式
+      // 通过工厂模式创建对象，解决了字面量创建对象的问题，也就是当创建多个相似对象的时候代码重复的问题。
+      // 但是问题是，所创建的所有对象都是`Object`类型 ，无法进一步的区分对象的具体类型是什么。
+      function createUser(userName, userAge) {
+        var o = new Object()
+        o.userName = userName
+        o.userAge = userAge
+        o.sayHi = function () {
+          console.log(this.userName + ':' + this.userAge)
+        }
+        return o
+      }
+
+      var user1 = createUser('wangwu', 20)
+      var user2 = createUser('lisi', 20)
+      user1.sayHi() //wangwu:20
+      console.log(user1.userName + ':' + user2.userName) //wangwu:lisi
+
+      //2. 构造函数创建对象
+      /*
+        构造函数创建对象的优点：解决了工厂模式中对象类型无法识别的问题，
+        也就是说通过构造函数创建的对象可以确定其所属的类型。
+        但是通过构造函数创建对象的问题：
+        在使用构造函数创建对象的时候，每个方法都会在创建对象时重新创建一遍，也就是说，
+        根据`Person`构造函数每创建一个对象，
+        我们就会创建一个`sayHi`方法，但它们做的事情是一样的，因此会造成内存的浪费。*/
+      function Person(userName, userAge) {
+        this.userName = userName
+        this.userAge = userAge
+        this.sayHi = function () {
+          console.log(this.userName + ':' + this.userAge)
+        }
+      }
+      var p = new Person('zhangsan', 19)
+      p.sayHi() //zhangsan:19
+      //3. 原型模式创建对象
+      /*
+        使用基于原型模式创建的对象，它的属性和方法都是相等的，也就是说不同的对象会共享原型上的属性和方法，
+        这样我们就解决了`构造函数`创建对象的问题。
+        但是这种方式创建的对象也是有问题的，因为所有的对象都是共享相同的属性，
+        所以改变一个对象的属性值，会引起其他对象属性值的改变。而这种情况是我们不允许的，
+        因为这样很容易造成数据的混乱。
+      */
+      function Person1(userName, userAge) {
+        Person1.prototype.userName = 'zs'
+        Person1.prototype.userAge = 18
+        Person1.prototype.sayHi = function () {
+          console.log(this.userName + ':' + this.userAge)
+        }
+      }
+      var person1 = new Person1()
+      person1.sayHi() //zs:18
+      var person2 = new Person1()
+      console.log(person1.sayHi === person2.sayHi) // true
+
+      //4. 组合使用构造函数模式和原型模式
+      //通过构造函数与原型模式组合创建对象的好处就是：
+      //每个对象都有自己的属性值，也就是拥有一份自己的实例属性的副本，同时又共享着方法的引用，最大限度的节省了内存。
+
+      //在构造函数中定义对象的属性
+      function Person2(userName, userAge) {
+        this.userName = userName
+        this.userAge = userAge
+      }
+      //在原型对象中添加共享的方法
+      Person2.prototype.sayHi = function () {
+        return this.userName
+      }
+      var p = new Person2('zhangsan', 21)
+      var p1 = new Person2('lisi', 22)
+      console.log(p1.sayHi()) //lisi
+      console.log(p.sayHi()) //zhangsan
+      // 不同对象共享相同的函数，所以经过比较发现是相等的。
+      console.log(p.sayHi === p1.sayHi) //true
+      //修改p对象的userName属性的值，但是不会影响到p1对象的userName属性的值
+      p.userName = 'admin'
+      console.log(p.sayHi()) //admin
+      console.log(p1.sayHi()) //lisi
+
+      //5. 动态原型模式创建对象
+      //所谓的使用动态原型模式创建对象，其实就是将所有的内容都封装到构造函数中，
+      //而在构造函数中通过判断只初始化一次原型。
+      function Person3(userName, userAge) {
+        this.userName = userName
+        this.userAge = userAge
+        if (typeof this.sayHi !== 'function') {
+          console.log('abc') //只输出一次
+          Person3.prototype.sayHi = function(){
+              console.log(this.userName);
+          }
+        }
+      }
+      var person = new Person3("zhangsan", 21);
+      var person1 = new Person3("zhangsan", 21);
+      person.sayHi();//abc zhangsan
+      person1.sayHi();//zhangsan
+    </script>
+  </body>
+</html>

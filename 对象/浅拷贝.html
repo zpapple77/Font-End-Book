@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //**基本数据类型不管是浅拷贝还是深拷贝都是对值的本身的拷贝。对拷贝后值的修改不会影响到原始的值。
+      // 对于引用数据类型进行浅拷贝，拷贝后的值的修改会影响到原始的值，
+      // 如果执行的是深拷贝，则拷贝的对象和原始对象之间相互独立，互不影响。
+      var obj = { a: 1, arr: [2, 3], o: { name: 'zhangsan' } }
+      var shallowObj = shallowCopy(obj)
+
+      function shallowCopy(src) {
+        var dst = {}
+        for (var prop in src) {
+          if (src.hasOwnProperty(prop)) {
+            //拷贝自身属性
+            dst[prop] = src[prop]
+          }
+        }
+        return dst
+      }
+      obj.o.name = 'lisi'
+      console.log(shallowObj.o.name) //lisi,值受到了影响
+      obj.arr[0] = 20
+      console.log(shallowObj.arr[0]) //20，值受到了影响
+      obj.a = 10
+      console.log(shallowObj.a) // 1,值没有收到影响
+      //除了以上方式实现浅拷贝以外，还可以通过`ES6`中的`Object.assign()`函数来实现，该函数可以将源对象中的可枚举的属性复制到目标对象中。
+
+      var obj = { a: 1, arr: [2, 3], o: { name: 'zhangsan' } }
+      var result = {}
+      //将obj对象拷贝给result对象
+      Object.assign(result, obj)
+      console.log(result)
+      obj.a = 10
+      console.log(result.a) // 1，不受影响
+      obj.arr[0] = 20
+      console.log(result.arr[0]) //20 受影响
+      obj.o.name = 'lisi'
+      console.log(result.o.name) // lisi 受影响
+    </script>
+  </body>
+</html>

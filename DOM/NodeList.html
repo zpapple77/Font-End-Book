@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="form1">
+      用户名<input type="text" id="userName" /> <br />
+      用户密码<input type="password" id="password" name="userPwd" />
+    </form>
+    <script>
+      //获取HTMLCollection集合
+      var form1Children = document.getElementById('form1').children
+      console.log(form1Children)
+      //获取NodeList对象
+      var formNodes = document.getElementById('form1').childNodes
+      console.log(formNodes)
+    </script>
+  </body>
+</html>

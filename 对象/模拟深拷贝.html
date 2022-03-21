@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let map = new WeakMap()
+      function clone(target) {
+        if (typeof target === 'object') {
+          let objTarget = Array.isArray(target) ? [] : {}
+          if (map.get(target)) {
+            return target
+          }
+          map.set(target, objTarget)
+          for (const key in target) {
+            objTarget[key] = clone(target[key])
+          }
+          return objTarget
+        } else {
+          return target
+        }
+      }
+      var obj = {
+        userName: 'zhangsan',
+        a: {
+          a1: 'hello',
+        },
+        //添加数组
+        arr: [2, 3],
+      }
+      obj.o = obj //构成了循环引用
+      var result = clone(obj)
+      console.log(result)
+      //a: {a1: 'hello'}
+      //userName: "zhangsan"
+      //只考虑了普通的`object`,还没有实现数组，所以将上面的代码修改一下，让其能够兼容到数组。
+      //添加了`  let objTarget = Array.isArray(target) ? [] : {};`判断`target`是否为数组。
+    </script>
+  </body>
+</html>

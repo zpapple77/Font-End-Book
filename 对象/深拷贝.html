@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 这里，我们可以使用
+      //JSON.parse(JSON.stringify())
+      //来实现深拷贝。
+      // JSON.stringify()可以将对象转换为字符串
+      // JSON.parse()可以将字符串反序列为一个对象
+    //   var obj = { a: 1, arr: [2, 3], o: { name: 'zhangsan' } }
+    //   var str = JSON.stringify(obj)
+    //   var resultObj = JSON.parse(str)
+    //   obj.a = 10
+    //   console.log(resultObj.a) // 1 不受影响
+    //   obj.arr[0] = 20
+    //   console.log(resultObj.arr[0]) // 2 不受影响
+    //   obj.o.name = 'lisi'
+    //   console.log(resultObj.o.name) // zhangsan 不受影响
+
+      //缺点
+      //第一：无法实现对函数的拷贝
+      // 第二：如果对象中存在循环引用，会抛出异常。
+      // 第三：对象中的构造函数会指向`Object`,原型链关系被破坏。
+      function Person(userName) {
+        this.userName = userName
+      }
+      var person = new Person('zhangsan')
+      var obj = {
+        fn: function () {
+          console.log('abc')
+        },
+        //属性o得值为某个对象
+        o: person,
+      }
+      var str = JSON.stringify(obj)
+      var resultObj = JSON.parse(str)
+      console.log('resultObj=', resultObj) // 这里丢失了fn属性。因为该属性的值为函数
+      console.log(resultObj.o.constructor) //指向了Object,导致了原型链关系的破坏。
+      console.log(obj.o.constructor) // 这里指向Person构造函数，没有问题
+    </script>
+  </body>
+</html>
