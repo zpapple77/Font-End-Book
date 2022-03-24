@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="div1">
+      <a href="#">a1</a>
+      <a href="#">a2</a>
+      <a href="#">a3</a>
+      <button>增加按钮</button>
+    </div>
+    <!-- <script>
+      const div1 = document.getElementById('div1')
+      div1.addEventListener('click', function (e) {
+        var target = e.target
+        if (target.nodeName.toLowerCase() === 'a') {
+          console.log(target.innerHTML)
+        }
+      })
+    </script> -->
+
+    <!-- 给每个`a`标签，添加了`id`属性，通过`switch`结构进行判断，然后执行不同的操作 -->
+    <script>
+      const div1 = document.getElementById('div1')
+      div1.addEventListener('click', function (e) {
+        var target = e.target
+        switch (target.id) {
+          case 'a1':
+            console.log('针对a1进行操作')
+            break
+          case 'a2':
+            console.log('针对a2进行操作')
+            break
+          case 'a3':
+            console.log('针对a3进行操作')
+            break
+        }
+      })
+    </script>
+  </body>
+</html>

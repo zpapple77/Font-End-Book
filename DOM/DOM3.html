@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="div1">监听自定义事件</div>
+    <button id="btn">单击</button>
+    <script>
+      var customeEvent
+      //在立即执行函数中创建自定义事件
+      ;(function () {
+        //判断浏览器是否支持DOM3事件处理程序，如果条件成立表示支持,固定写法
+        if (document.implementation.hasFeature('CustomEvents', '3.0')) {
+          var user = { userName: 'zhangsan' }
+          customeEvent = document.createEvent('CustomEvent') //创建自定义事件
+          customeEvent.initCustomEvent('myEvent', true, false, user) //初始化
+          //参数1.事件名， 2. 是否冒泡 3.是否可以取消 4.对象，任意值
+        }
+      })()
+
+      //监听自定义事件
+      //通过addEventListener()函数监听自定义的事件`myEvent`
+      var div1 = document.getElementById('div1')
+      div1.addEventListener('myEvent', function (e) {
+        console.log('用户名是:', e.detail.userName)
+      })
+      //触发自定义事件
+      var btn1 = document.getElementById('btn')
+      btn.addEventListener('click', function () {
+        div1.dispatchEvent(customeEvent)
+      })
+    </script>
+  </body>
+</html>

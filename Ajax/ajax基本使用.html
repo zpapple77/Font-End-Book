@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      window.onload = function () {
+        var btn = document.getElementById('btnLogin')
+        btn.addEventListener('click', function () {
+          sendRequest()
+        })
+      }
+      function sendRequest() {
+        var userName = document.getElementById('userName').value
+        //请求参数，其中包含回调函数
+        var param = 'name=' + userName + '&callback=successFn'
+        //请求的url
+        var url = 'http://localhost:3000/getUserNameInfo?' + param
+        var script = document.createElement('script')
+        script.src = url
+        document.body.appendChild(script)
+      }
+      function successFn(result) {
+        console.log('result=', result)
+      }
+      // function sendRequest() {
+      //   var userName = document.getElementById("userName").value;
+      //   //这里为了简单，暂时不考虑浏览器兼容性问题
+      //   var xhr = new XMLHttpRequest();
+      //   let url = "http://localhost:3000/getUserNameInfo?name=" + userName;
+      //   xhr.open("get", url, true);//async：true（异步）或 false（同步）
+      //   xhr.send();
+      //   xhr.onreadystatechange = function () {
+      //     if (xhr.readyState === 4 && xhr.status === 200) {
+      //       console.log(xhr.responseText);
+      //     }
+      //   };
+      // }
+    </script>
+  </head>
+  <body>
+    用户名:<input type="text" id="userName" /> <br />
+    <button id="btnLogin">登录</button>
+  </body>
+</html>
