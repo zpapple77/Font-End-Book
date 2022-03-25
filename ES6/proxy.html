@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //target:表示所要拦截的目标对象(原来要访问的对象)
+        //handler:也是一个对象，表示拦截的行为和规则。
+        // let proxy = new Proxy(target,hander)
+
+        let student = {
+            userName:'zhangsan',
+            userAge:20
+        }
+        // let proxy1 = new Proxy(student,{
+        //     get:function(target,property){//第一个参数是目标对象，第二个参数是属性
+        //         if(property in target){
+        //             return target[property]
+        //         }else{
+        //             // （引用错误） 对象代表当一个不存在的变量被引用时发生的错误。
+        //             throw new ReferenceError('访问属性'+property+'不存在')
+        //         }
+        //     }
+        // })
+        // console.log(proxy1.userName);
+        // console.log(proxy1.userAge);
+        
+        let proxy2 = new Proxy(student,{
+            set:function(obj,prop,value){//对象，参数，值
+                console.log('obj=', obj);
+                console.log('prop=', prop);
+                console.log('value=', value);
+                if(prop==='userAge'){//如果修改的是userAge
+                    if(!Number.isInteger(value)){
+                        throw new TypeError('年龄不是整数')
+                    }
+                    if(value>60){
+                        throw new RangeError('年龄太大了')
+                    }
+                    obj[prop]=value
+                }
+            }
+        })
+        proxy2.userAge = 40
+        console.log(('proxy2age:'+proxy2.userAge));
+    </script>
+</body>
+</html>

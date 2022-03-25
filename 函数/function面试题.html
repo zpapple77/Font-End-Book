@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //构造函数
+      function Foo() {
+        /*
+        全局变量赋值
+        注意：如果Foo函数没有执行，下面的赋值行为是肯定不执行的,如：
+        getName = function() { }
+        */
+        getName = function () {
+          console.log(1)
+        }
+        return this
+      }
+
+      // 函数Foo上的静态方法 -> 静态方法指：一个函数对象上的方法/属性
+      Foo.getName = function () {
+        console.log(2)
+      }
+
+      /*
+      扩展函数原型上的方法,推导：
+      var foo = new Foo() -> foo.getName
+      new Foo().getName
+      */
+      Foo.prototype.getName = function () {
+        console.log(3)
+      }
+
+      // 给全局变量赋值为一个匿名函数
+      var getName = function () {
+        console.log(4)
+      }
+
+      //函数声明
+      function getName() {
+        console.log(5)
+      }
+
+      /*
+      分析执行过程：Foo.getName();
+      这里执行的是函数上的静态方法 getName ，执行结果为 2
+      */
+      Foo.getName() // 2
+
+      /*
+      分析执行过程：getName();
+      js预编译过程，GO{ }
+      GO{
+        getName: 
+          undefined -> 
+          function(){ } 依次找：变量声明和函数声明
+          function () { console.log(4) }  变量赋值，执行结果为 4
+      }
+      */
+      getName() // 4
+
+      /*
+      分析执行过程：
+      直接执行Foo(),Foo函数中的this指向window
+      函数Foo()返回值为this，也就是 this.getName() 
+      也就是：window.getName()
+
+      执行函数Foo时，getName重新被赋值，
+      getName= function () {
+        console.log(1);       执行结果为 1
+      }
+      */
+      Foo().getName() // 1
+
+      /*
+      分析执行结果：
+      因为上面的 window.getName() 的结果为 1
+      推测：直接访问 getName() 的结果也是 1
+      */
+      getName() // 1
+
+      /*
+      分析执行结果：
+      new 作用于 Foo.getName() 而不是 Foo  注意：区别 new Foo()，此时new 作用于Foo
+      其实访问的是Foo下面的函数getName() 也就是 Foo静态方法getName，所以执行结果为 2
+    此时 new 没有什么特殊含义，它仅仅 new 了 Foo静态方法getName指向的函数，function(){ }
+    Foo静态方法getName中的this指向：Foo函数
+    而 new Foo.getName()，this指向一个对象：Foo.getName {}
+      */
+      new Foo.getName() // 2
+
+      /*
+      分析执行结果：推导
+      var foo= new Foo();  // 实例化对象 foo  实例化对象继承了原型对象上的方法和属性
+      foo.getName() 也就是 Foo.prototype.getName
+      所以执行结果 3
+      */
+      new Foo().getName() // 3
+
+      /*
+      分析执行结果：推导如上
+      这里的第一个new，没有什么实际意义，执行过程：
+      new Foo()
+      new Foo().getName(); // 这里可以出结果 3
+      new new Foo().getName(); // 再次 new 3
+    知识：new 的作用是让函数内部返回一个新的对象。
+    new fun.a() 其实就是调用fun.a(),只是new的对象是fun.a函数
+      */
+      new new Foo().getName() // 3
+    </script>
+  </body>
+</html>

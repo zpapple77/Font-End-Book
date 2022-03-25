@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+      <input type="button" value="切换图片" id="btn">
+      <img style="height: 400px;" src="../img/a.jpg" id="mv">
+    <script>
+      let button = document.getElementById('btn') //找到按钮
+      let mm = document.getElementById('mv') //找到img标签
+      let it = f(0)
+      button.onclick = function () {
+        it.next()
+      }
+
+      function* f(flag) {
+        while (true) {
+          mm.src = '../img/b.jpg'
+          yield flag
+          mm.src = '../img/a.jpg'
+          yield flag
+        }
+      }
+    </script>
+  </body>
+</html>

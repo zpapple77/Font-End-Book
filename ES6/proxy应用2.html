@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="txtInput" />
+    <p id="txtP"></p>
+    <script>
+      //模拟双向数据绑定
+      //在Vue中，是有双向绑定功能的，下面通过Proxy来模拟一下。
+      let input = document.getElementById('txtInput')
+      let p = document.getElementById('txtP')
+
+      let obj = {
+        text: '',
+      }
+      let newObj = new Proxy(obj, {
+        set: function (target, key, value) {
+          if (target.hasOwnProperty(key)) {
+            p.innerHTML = value
+            input.value = value
+          }
+        },
+      })
+      input.addEventListener('keyup', function (e) {
+        newObj.text = e.target.value
+      })
+    </script>
+  </body>
+</html>

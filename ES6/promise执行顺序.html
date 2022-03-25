@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise执行顺序问题</title>
+  </head>
+  <body>
+    <script>
+      console.log("start");//同步代码执行完了才会去执行promise（微任务）
+      setTimeout(() => {//微任务执行完了才会去执行sto（宏任务）
+        console.log("setTimeout");
+      }, 0);
+      Promise.resolve()
+        .then(() => {
+          console.log("promise");
+        })
+        .then(() => {
+          console.log("promise2");
+        })
+        .then(() => {
+          console.log("promise3");
+        });
+      console.log("end");
+    </script>
+  </body>
+</html>

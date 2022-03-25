@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //实现私有属性
+      const userInfo = {
+        _id: 123,
+        id: 123,
+        getAllUsers: function () {
+          console.log('获取所有的用户信息')
+        },
+        getUserById: function (userId) {
+          console.log(`查询到${userId}号的用户信息`)
+        },
+        saveUser: function (user) {
+          console.log('保存用户信息')
+        },
+      }
+
+      const proxy = new Proxy(userInfo, {
+        get: function (target, prop) {
+          if (prop[0] === '_') {
+            return undefined
+          }
+          return target[prop]
+        },
+
+        set: function (target, prop, value) {
+          if (prop[0] !== '_') {
+            target[prop] = value
+          }
+        },
+      })
+      proxy._id = 333//赋值失败
+      console.log(proxy._id);
+      console.log(proxy.id);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //校验的应用
+      //1.对象的创建
+      class Person {
+        constructor() {
+          this.name = ''
+          this.age = ''
+          return validator(this, personValidators)
+          //这个函数的返回对象是一个Proxy对象
+          //参数一是创建的对象，参数二是校验规则
+        }
+      }
+
+      //2.检验规则
+      const personValidators = {
+        name(value) {
+          return typeof value === 'string'
+        },
+        age(value) {
+          return typeof value === 'number' && value > 18
+        },
+      }
+
+      //3.校验功能
+      function validator(target, validator) {//(this, personValidators)
+        return new Proxy(target, {
+          _validator: validator,//接收检验规则
+          set: function (target, key, value) {
+            if (target.hasOwnProperty(key)) {//有这个key属性吗？
+              let fn = this._validator[key]//校验规则中对应的校验函数
+              if (fn(value)) {
+                return Reflect.set(target, key, value)
+              } else {
+                throw new Error(`不能给${key}属性设${value}`)
+              }
+            } else {
+              throw new Error(`${key}不存在`)
+            }
+          },
+        })
+      }
+
+      let person = new Person()
+      person.name = 'zs'
+      person.age = 30
+      console.log(person)
+    </script>
+  </body>
+</html>

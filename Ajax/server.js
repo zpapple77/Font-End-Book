@@ -1,13 +1,13 @@
 var express = require('express')
 var app = express()
-// app.all('*', function (req, res) {
-//     //设置可以接收请求的域名
-//     res.header('Access-Control-Allow-Origin', '*');//可以接受哪个域发的请求
-//     res.header('Access-Control-Allow-Methods', 'GET, POST,PUT');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type');
-//     res.header('Content-Type', 'application/json;charset=utf-8');
-//     req.next();
-// })
+app.all('*', function (req, res) {
+    //设置可以接收请求的域名
+    res.header('Access-Control-Allow-Origin', '*');//可以接受哪个域发的请求
+    res.header('Access-Control-Allow-Methods', 'GET, POST,PUT');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Content-Type', 'application/json;charset=utf-8');
+    req.next();
+})
 app.get('/getUserNameInfo', function (req, res) {
   var userName = req.query.name
 

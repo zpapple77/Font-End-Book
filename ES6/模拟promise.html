@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function MyPromise(task) {
+        let that = this
+        that.status = 'Pending'
+        that.value = undefined
+        that.onResolvedCallbacks = []
+        that.onRejectedCallbacks = []
+
+        function resolve(value) {
+          if (that.status === 'Pending') {
+            that.status = 'Resolved'
+            that.value = value
+            that.onResolvedCallbacks.forEach((item) => item(that.value))
+          }
+        }
+        function reject(reason) {
+          if (that.status === 'Pending') {
+            that.status = 'Rejected'
+            that.value = reason
+            //状态修改完成后，调用的是then方法中处理失败的回调函数
+            that.onRejectedCallbacks.forEach((item) => item(that.value))
+          }
+        }
+        //调用传递过来的回调函数，并把创建好的resolve，reject传递过去
+        //使用try...catch...捕获异常，交给reject函数处理
+        try {
+          task(resolve, reject)
+        } catch (error) {
+          reject(error)
+        }
+      }
+      MyPromise.prototype.then = function (onFulfilled, onRejected) {
+        let that = this
+        if(that.status==='Resolved'){
+          onFulfilled(that.value)
+        }
+        if(that.status==='Rejected'){
+          onRejected(that.value)
+        }
+        that.onResolvedCallbacks.push(onFulfilled)
+        that.onRejectedCallbacks.push(onRejected)
+      }
+      let myPromise = new MyPromise(function (resolve, reject) {
+        // setTimeout(() => {
+        //   let num = Math.random()
+        //   if (num > 0.3) {
+        //     resolve('成功了')
+        //   } else {
+        //     reject('失败了')
+        //   }
+        // }, 3000)
+        // resolve('成功了')
+        reject(111)
+      })
+      myPromise.then(
+        function (value) {
+          console.log(value)
+        },
+        function (reason) {
+          console.log(reason)
+        }
+      )
+    </script>
+  </body>
+</html>

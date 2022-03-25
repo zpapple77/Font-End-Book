@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise链式调用</title>
+  </head>
+  <body>
+    <script>
+      let getJson = function (url) {
+        let p = new Promise(function (resolve, reject) {
+          let xhr = new XMLHttpRequest();
+          xhr.open("GET", url);
+          xhr.onreadystatechange = handler;
+          xhr.responseType = "json";
+          xhr.setRequestHeader("Accept", "application/json");
+          xhr.send();
+          function handler() {
+            if (xhr.readyState === 4) {
+              if (xhr.status == 200) {
+                resolve(this.response);
+              } else {
+                reject(new Error(this.statusText));
+              }
+            }
+          }
+        });
+        return p;
+      };
+      getJson("http://localhost:8080")
+        .then(function (value) {
+          console.log(value);
+          console.log("111");
+          return getJson("http://localhost:8080/函数");
+        })
+        .then(function (value) {
+          console.log("then2=", value);//undefined
+          console.log("222");
+        })
+        .then(function (value) {
+          console.log(value);
+          console.log("333");
+        })
+        .then(function (value) {
+          console.log("444");
+          return "abc";//then方法返回的是promise对象，而abc是作为promise对象的值返回
+        })
+        .then(function (value) {
+          console.log("555555");
+          console.log("then5=", value);
+        });
+    </script>
+  </body>
+</html>

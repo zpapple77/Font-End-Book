@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //Generator函数也称之为生成器函数，可以用来生成迭代器，。
+      //也就是可以通过for...of来遍历Generator函数.
+      //并且Generator函数提供了一种异步编程的解决方案。
+      function* go(str) {
+        console.log(1)
+        let a = yield str//** a = ...
+        console.log(2)
+        let b = yield a
+        console.log(3)
+        return b 
+      }
+      let it = go('a的值') //生成迭代器,这里也可以传递参数
+      let r1 = it.next() //开始执行
+      console.log(r1)//{value: 'a', done: false} done为false表示 还未结束
+      let r2 = it.next('b的值') //继续执行，字符串b的值传递至**处a
+      console.log(r2)//{value: 'b的值', done: false}
+      let r3 =  it.next()
+      console.log(r3);//{value: undefined, done: true}
+    </script>
+  </body>
+</html>

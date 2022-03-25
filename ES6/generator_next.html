@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function* test(num) {
+        let x = 3 * (yield num + 1)
+        let y = yield x / 3
+        return x + y + num
+      }
+      let n = test(6)
+      console.log(n.next())//这里不能带参数，是用来启动迭代器的
+      console.log(n.next(3))//这里的参数3  给到了第一个yield的返回结果，然后*3 得到9，再除3 得3
+      console.log(n.next(3))//这里的参数3  给到了第二个yield的返回结果，9+3+6
+    </script>
+  </body>
+</html>
