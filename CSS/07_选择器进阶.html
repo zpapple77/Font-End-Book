@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        /*后代*/
+      div p {
+        color: red;
+      }
+      /*子选择器*/
+      p>a{
+          color: blue;
+          display: block;
+      }
+      /*并集选择器（兄弟）*/
+      p,div{
+          color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 常用的复合选择器包括：**后代选择器、子选择器、并集选择器、伪类选择器**等等 -->
+    <!-- 后代：儿子，孙子，重孙 -->
+    <p>这是p标签</p>
+    <div>
+      <p>
+        <a>这是div的儿子p的儿子a</a>
+        这是div的儿子p
+      </p>
+    </div>
+  </body>
+</html>

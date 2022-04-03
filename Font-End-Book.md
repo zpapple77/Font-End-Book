@@ -487,11 +487,53 @@ overflow:hidden | auto | scroll
 
 ## 10.React/React-Router/Redux
 
-### 10.1redux-thunk原理
+### 1 redux-thunk原理
 
 ![img](https://img2018.cnblogs.com/blog/331769/201903/331769-20190320064356094-1041948774.png)
 
 view在redux中会派发一个action，action通过store的dispatch方法派发给store,store接收到action，连同之前到state，一起传给reducer，reducer返回一个新到数据给store,store去改变自己到state。这是redux的一个标准流程，那么我们说redux的中间件指的是谁和谁的之间，大家一定要记住，**redux的中间件指的是action和store之间。之前我们说action只能是一个对象，所以action是一个对象直接派发给了store。**但是现在，当我们使用了redux-thunk之后，action可以是函数了。
+
+### 2. 区分Real DOM和Virtual DOM
+
+| **Real DOM**                   | **Virtual DOM**                |
+| ------------------------------ | ------------------------------ |
+| 1. 更新缓慢。                  | 1. 更新更快。                  |
+| 2. 可以直接更新 HTML。         | 2. 无法直接更新 HTML。         |
+| 3. 如果元素更新，则创建新DOM。 | 3. 如果元素更新，则更新 JSX 。 |
+| 4. DOM操作代价很高。           | 4. DOM 操作非常简单。          |
+| 5. 消耗的内存较多。            | 5. 很少的内存消耗。            |
+
+### 3.**React有什么特点？**
+
+React的主要功能如下：
+
+1. 它使用**虚拟DOM** 而不是真正的DOM。
+2. 它可以进行**服务器端渲染**。
+3. 它遵循**单向数据流**或数据绑定。
+
+### 4.**你了解 Virtual DOM 吗？解释一下它的工作原理。**
+
+Virtual DOM 是一个轻量级的 JavaScript 对象，它最初只是 real DOM 的副本。它是一个节点树，它将元素、它们的属性和内容作为对象及其属性。 React 的渲染函数从 React 组件中创建一个节点树。然后它响应数据模型中的变化来更新该树，该变化是由用户或系统完成的各种动作引起的。
+
+Virtual DOM 工作过程有三个简单的步骤。
+
+1. 每当底层数据发生改变时，整个 UI 都将在 Virtual DOM 描述中重新渲染。
+
+![clipboard.png](https://segmentfault.com/img/bVbqdVC?w=1363&h=499)
+
+然后计算之前 DOM 表示与新表示的之间的差异
+
+![clipboard.png](https://segmentfault.com/img/bVbqdVw?w=1079&h=452)
+
+完成计算后，将只用实际更改的内容更新 real DOM。
+
+![clipboard.png](https://segmentfault.com/img/bVbqdVr?w=531&h=457)
+
+### 5.**为什么浏览器无法读取JSX？**
+
+浏览器只能处理 JavaScript 对象，而不能读取常规 JavaScript 对象中的 JSX。所以为了使浏览器能够读取 JSX，首先，需要用像 Babel 这样的 JSX 转换器将 JSX 文件转换为 JavaScript 对象，然后再将其传给浏览器。
+
+
 
 
 
