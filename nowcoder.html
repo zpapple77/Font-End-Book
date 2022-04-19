@@ -5,30 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <style>
-      .wrap {
-        width: 400px;
-        height: 400px;
-        border: 1px solid red;
-        margin: 0 auto;
-        position: relative;
-      }
-      .child {
-        width: 200px;
-        height: 200px;
-        background: #ccc;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
+    <style></style>
   </head>
   <body>
     <body>
-      <div class="wrap">
-        <div class="child">水平垂直居中</div>
-      </div>
+      <input type="text" value="<%= getParameter("keyword") %>">
+      <button>搜索</button>
+      <div>您搜索的关键词是：<%= getParameter("keyword") %></div>
     </body>
   </body>
 </html>
