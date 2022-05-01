@@ -1,6 +1,14 @@
-let arr2 = [5, 2, 11, 3, 4, 1];
+var firstMissingPositive = function (nums) {
+  let set = new Set(nums)
+//   console.log(set)
+  for (var i = 1; i < nums.length; i++) {
+    if (set.has(i)) {
+        console.log(i);
+      
+    }else{
+        return i
+    }
+  }
+}
 
-let result = arr2.sort((a,b)=>(a-b)); // 将数组 arr2 进行排序
-
-console.log('arr2 =' + JSON.stringify(arr2));
-console.log('result =' + JSON.stringify(result));
+console.log(firstMissingPositive([1, 2, 0]))
