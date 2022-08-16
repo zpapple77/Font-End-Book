@@ -10,7 +10,7 @@
 export default {
   data() {
     return {
-      arr: ['小张', '小刘', '小李'],
+      arr: ['小张', '小李', '小赵'],
     }
   },
 }

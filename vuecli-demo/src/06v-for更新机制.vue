@@ -10,6 +10,7 @@
 <script>
 export default {
   data() {
+    
     return {
       arr: ['老大', '老二', '老三'],
     }

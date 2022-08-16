@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise链式调用</title>
+  </head>
+  <body>
+    <script>
+      let getJson = new Promise(function () {
+        console.log('1')
+        return 1
+      })
+      getJson
+        .then(
+          function (value) {
+            console.log(value)
+            return 2
+          },
+          function (reason) {
+            console.log(reason)
+          }
+        )
+        .then(function (value) {
+          console.log('then2=', value)
+          console.log('222')
+        },function(reason){
+            console.log(reason);
+        }) //返回值为undefined的promise
+        .then(function (value) {
+          console.log(value)
+          console.log('333')
+        })
+        .then(function (value) {
+          console.log('444')
+          return 'abc'
+        })
+        .then(function (value) {
+          console.log('555555')
+          console.log('then5=', value)
+        })
+    </script>
+  </body>
+</html>
