@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      #box {
+        width: 200px;
+        height: 200px;
+        background-color: red;
+        position: relative;
+        left: -200px;
+      }
+      #box span {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        color: black;
+        background-color: green;
+        right: -40px;
+        top: 50%;
+        transform: translate(0, -50%);
+        text-align: center;
+        line-height: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <span>滑出</span>
+    </div>
+    <script>
+      window.onload = function () {
+        let box = document.getElementById('box')
+        let timer = null
+        let speed = 0
+        box.onmouseover = function () {
+          startAnimation(this, 0)
+        }
+        box.onmouseout = function () {
+          startAnimation(this, -200)
+        }
+
+        function startAnimation(obj, end) {
+          // 先关闭定时器
+          clearInterval(timer)
+          speed = end > obj.offsetLeft ? 5 : -5
+          timer = setInterval(() => {
+            if (obj.offsetLeft === end) {
+              clearInterval(timer)
+              return
+            }
+            obj.style.left = obj.offsetLeft + speed + 'px'
+          }, 30)
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      #box {
+        width: 200px;
+        height: 200px;
+        background-color: red;
+        position: relative;
+        left: -200px;
+      }
+      #box span {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        color: black;
+        background-color: green;
+        right: -40px;
+        top: 50%;
+        transform: translate(0, -50%);
+        text-align: center;
+        line-height: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <span>滑出</span>
+    </div>
+    <script>
+      //0~200
+      //缓动动画公示:  加速度 = (结束值-起始值)/缓动系数   加速度由快到慢
+      window.onload = function () {
+        let box = document.getElementById('box')
+        let timer = null,
+          end = 0,
+          end2 = -200
+        box.onmouseover = function () {
+          slowAnimation(this, 0)
+        }
+
+        box.onmouseout = function () {
+          slowAnimation(this, -200)
+        }
+        function slowAnimation(obj, end) {
+          clearInterval(timer)
+          timer = setInterval(function () {
+            speed = (end - box.offsetLeft) / 10
+            //如果速度大于0,证明物体往右走,速度小于0,证明物体往左走
+            speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed)
+            console.log(speed)
+            if (obj.offsetLeft === end) {
+              clearInterval(timer)
+              return
+            }
+            obj.style.left = obj.offsetLeft + speed + 'px'
+          }, 30)
+        }
+      }
+    </script>
+  </body>
+</html>
