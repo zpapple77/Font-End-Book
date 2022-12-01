@@ -70,7 +70,20 @@
       var arr = [1, 2, 3, 4, 5, 5, 6, '6']
       console.log(fn4(arr))
 
+      // filter() 方法创建一个新的数组，
+      // 新数组中的元素是通过检查指定数组中符合条件的所有元素。
+      // item是当前元素的值，index是当前元素的索引值。
+      // indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。
+      // 利用indexOf() 查询到数组的下标，看是否等于当前的下标，相等的话就返回，否则不返回值。
 
+      var arr = ['apple', 'apps', 'pear', 'apple', 'orange', 'apps']
+
+      console.log(arr)
+      var newArr = arr.filter(function (item, index) {
+        return arr.indexOf(item) === index // 因为indexOf 只能查找到第一个
+      })
+
+      console.log(newArr)
     </script>
   </body>
 </html>
